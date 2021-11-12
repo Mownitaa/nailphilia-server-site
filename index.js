@@ -1,5 +1,6 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 
 const cors = require('cors');
@@ -21,6 +22,7 @@ async function run() {
         const database = client.db('Nailphilia');
         const productsCollection = database.collection('products');
         const reviewsCollection = database.collection('reviews');
+        const purchasesCollection = database.collection('purchases');
 
         // GET PRODUCTS API
         app.get('/products', async (req, res) => {
@@ -46,14 +48,39 @@ async function run() {
             res.send(reviews);
         });
 
+        // GET Single Review
+        app.get('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('getting specific review', id);
+            const query = { _id: ObjectId(id) };
+            const review = await reviewsCollection.findOne(query);
+            res.json(service);
+        })
+
         // POST REVIEWS API
         app.post('/reviews', async (req, res) => {
             const review = req.body;
-            console.log('Hit the review post api', product);
+            console.log('Hit the review post api', review);
             const result = await reviewsCollection.insertOne(review);
+            console.log(result);
             console.log(result);
             res.json(result);
         });
+
+
+
+        // POST PURCHASES API
+        app.post('/product/:productId', async (req, res) => {
+
+        })
+
+        // DELETE API
+        //  app.delete('/reviews/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: ObjectId(id) };
+        //     const result = await reviewsCollection.deleteOne(query);
+        //     res.json(result);
+        // })
     }
     finally {
         // await client.close();
