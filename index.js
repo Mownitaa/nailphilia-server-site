@@ -20,19 +20,37 @@ async function run() {
         await client.connect();
         const database = client.db('Nailphilia');
         const productsCollection = database.collection('products');
+        const reviewsCollection = database.collection('reviews');
 
         // GET PRODUCTS API
         app.get('/products', async (req, res) => {
             const cursor = productsCollection.find({});
             const products = await cursor.toArray();
             res.send(products);
-        })
+        });
 
         // POST PRODUCTS API
         app.post('/products', async (req, res) => {
             const product = req.body;
             console.log('Hit the post api', product);
             const result = await productsCollection.insertOne(product);
+            console.log(result);
+            res.json(result);
+        });
+
+
+        // GET REVIEWS API
+        app.get('/reviews', async (req, res) => {
+            const cursor = reviewsCollection.find({});
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
+
+        // POST REVIEWS API
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            console.log('Hit the review post api', product);
+            const result = await reviewsCollection.insertOne(review);
             console.log(result);
             res.json(result);
         });
