@@ -69,6 +69,20 @@ async function run() {
         });
 
 
+
+        // DELETE PRODUCT API
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            console.log('deleting user with id', id);
+            res.json(result);
+        })
+
+
+
+
+
         // GET REVIEWS API
         app.get('/reviews', async (req, res) => {
             const cursor = reviewsCollection.find({});
@@ -94,15 +108,6 @@ async function run() {
             console.log(result);
             res.json(result);
         });
-
-        // DELETE API
-        //  app.delete('/reviews/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) };
-        //     const result = await reviewsCollection.deleteOne(query);
-        //     res.json(result);
-        // })
-
 
 
 
@@ -177,5 +182,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log('Server running at port', port);
 })
-
-
