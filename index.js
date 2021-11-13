@@ -104,7 +104,7 @@ async function run() {
 
 
 
-
+        // users api
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
@@ -123,14 +123,14 @@ async function run() {
             res.json(result);
         });
 
-        app.put('/users', async (req, res) => {
-            const user = req.body;
-            const filter = { email: user.email };
-            const options = { upsert: true };
-            const updateDoc = { $set: user };
-            const result = await usersCollection.updateOne(filter, updateDoc, options);
-            res.json(result);
-        });
+        // app.put('/users', async (req, res) => {
+        //     const user = req.body;
+        //     const filter = { email: user.email };
+        //     const options = { upsert: true };
+        //     const updateDoc = { $set: user };
+        //     const result = await usersCollection.updateOne(filter, updateDoc, options);
+        //     res.json(result);
+        // });
 
         app.put('/users/admin', verifyToken, async (req, res) => {
             const user = req.body;
