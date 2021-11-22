@@ -59,6 +59,17 @@ async function run() {
             res.send(products);
         });
 
+
+        app.get('/products/:productId', async (req, res) => {
+            const productId = req.params.productId;
+            const query = { _id: ObjectId(productId) };
+            const product = await productsCollection.findOne(query);
+            res.json(product);
+        })
+
+
+
+
         // POST PRODUCTS API
         app.post('/products', async (req, res) => {
             const product = req.body;
@@ -108,7 +119,6 @@ async function run() {
             console.log(result);
             res.json(result);
         });
-
 
 
         // users api
